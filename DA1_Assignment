@@ -1,0 +1,136 @@
+Load the nycflights13 package
+Check the structure of the flights dataset
+Load the data.table package
+Create a new data.table object called dt with the content of the flights dataset
+
+library(nycflights13)
+str(flights)
+library(data.table)
+dt<- data.table(flights)
+-------------------
+4/1
+Count the number or rows in the dt object and store in the n variable!
+n <- dt[, .N]
+---------------------
+4/2
+Count the number of flights in the dt dataset starting from JFK and store the result in the n variable! 
+Note, that dt is already available in the workspace, no need to create it or load data.table.
+
+n <- dt[origin == "JFK", .N]
+-------------------------
+4/3
+Count the number of flights per origin and store the resulting object in the n variable! 
+Please use the data.table approach instead of the table command to solve this exercise.
+
+n <- dt[, .N, by = 'origin']
+-----------------------
+4/4
+Count the number of flights in the dt dataset starting from JFK and heading to LAX, and store the result in the n variable!
+
+str(dt)
+n <- dt[origin =='JFK' & dest =='LAX', .N ]
+------------------------
+4/5
+Compute the average air time of flights in the dt dataset leaving from JFK to LAX, and store the result in the n variable!
+
+n <- dt[origin == "JFK" & dest == "LAX", mean(air_time, na.rm = TRUE)]
+----------------------------
+4/6
+
+Compute the minimum and the maximum distances of flights in the dt dataset split by the origin airport, 
+and store the result in the n variable! 
+The resulting data.table object should have the following column names: origin, min and max, and store it in the res variable.
+
+n <- dt[, .(min(distance), max(distance)), by = origin]
+res <- data.table(origin = n$origin, min = n$V1, max = n$V2)
+----------------------
+4/7
+
+Compute the minimum, the (arithmetic) average, the standard deviation and the max of the air time of flights in the dt dataset 
+split by the origin airport, and store the result in the n variable! 
+The resulting data.table object should have the following column names: 
+airport, min, avg, stddev and max, and store it in the res variable.
+
+str(dt)
+n <- dt[, .(min(air_time, na.rm = TRUE), mean(air_time, na.rm = TRUE), sd(air_time, na.rm = TRUE), max(air_time, na.rm = TRUE)), by = origin]
+n
+res <- data.table(airport = n$origin, min = n$V1, avg = n$V2, stddev = n$V3, max = n$V4 )
+-----------------
+4/8
+Use the ggplot2 package to generate a barplot on the number of flights (in the dt dataset) per the origin airport.
+
+str(dt)
+library(ggplot2)
+ggplot(dt, aes(origin)) + geom_bar()
+-----------------------------
+4/9
+Use the ggplot2 package to generate a stacked barplot on the number of flights per the origin and dest airports.
+
+library(ggplot2)
+ggplot(dt, aes(dest, fill = origin)) + geom_bar()
+-------------------
+4/10
+Use the ggplot2 package to generate a boxplot on the air time split by the origin categories.
+
+ggplot(dt, aes(origin, air_time)) + geom_boxplot()
+-----------------------
+4/11
+Create a new object called dtsummaries that includes the average distance and air time of flights split by destination and origin airports. 
+The column names should be: dest, origin, distance and air_time. 
+Then pass this new object to ggplot2 and generate a scatterplot on the average distances and air times.
+
+str(dt)
+n <- dt[, .(mean(distance, na.rm = TRUE), mean(air_time, na.rm = TRUE)), by = .(origin, dest)]
+n
+dtsummaries <- data.table(dest = n$dest, origin = n$origin, distance = n$V1, air_time = n$V2)
+
+ggplot(dtsummaries, aes(distance, air_time)) + geom_point()
+-----------------------
+4/12
+
+The dtsummaries object is still available in your workspace from the previous exercise. 
+Now use the ggplot2 package to generate a scatterplot on the distance and the air time of the flights -- 
+just like in the previous exercise, but add a model on the top of the points as a new layer.
+
+ggplot(dtsummaries, aes(distance, air_time)) + geom_point() + geom_smooth()
+-----------------------
+4/13
+
+Use the ggplot2 package to generate a scatterplot on the distance and the air time of the flights 
+recorded in the dtsummaries dataset, including a linear model fitted on those -- 
+just like in the previous exercise, but this time, colorize the points by origin and fit 1-1 model on these subset.
+
+
+str(dtsummaries)
+ggplot(dtsummaries, aes(x=distance, y=air_time, colour=origin)) + 
+geom_point() + geom_smooth(method = "lm")   #aes(colour = origin))
+
+--------------------------
+4/14
+
+Use the ggplot2 package to generate a boxplot on the distance split by the origin airport -- 
+broken down by the flight carrier in subplots using facets
+
+str(dt)
+ggplot(dt, aes(origin, air_time)) + geom_boxplot()+facet_grid(~carrier)
+-------------------
+4/15
+
+Use the ggplot2 package to generate a barplot on the average air times by destination.
+
+Instructions
+Load the nycflights13 package
+Create a dt object from flights as a data.table object
+Compute the average air time per destination and store the resulting data.table object in the airtime_by_dest variable. The column names should be dest and air_time.
+Reorder the factor levels in this new object by the related air_time
+Plot the bar plot
+--------------------
+
+library(nycflights13)
+dt <- as.data.table(flights)
+n <- dt[, .(mean(air_time, na.rm = TRUE)), by= dest ]
+airtime_by_dest <- data.table(dest = n$dest, air_time = n$V1)
+
+airtime_by_dest[, dest := factor(dest, levels = airtime_by_dest[order(air_time), dest])]
+
+ggplot(airtime_by_dest, aes(dest, air_time)) + geom_bar()
