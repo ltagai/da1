@@ -1,0 +1,96 @@
+3/1
+
+Load the ggplot2 package
+Check the structure of the diamonds dataset
+Load the data.table package
+Create a new data.table object called dt with the content of the diamonds dataset
+
+library(ggplot2)
+str(diamonds)
+library(data.table)
+dt <- data.table(diamonds)
+---------------------------
+3/2
+
+Count the number or rows in the dt object and store in the n variable!
+
+n <- dt[,.N]
+-----------------------------
+3/3
+
+Count the number of diamonds with "Fair" cut and store the result in the n variable!
+
+n <- dt[cut == 'Fair', .N]
+---------------------------
+3/4
+
+Count the number of diamonds by the quality of cut and store the resulting object in the n variable! 
+n should be a data.table object, so please don't use the table command this time.
+
+n <- dt[,.N, by = cut]
+------------------------
+3/5
+
+Compute the minimum, the (arithmetic) average, the standard deviation and the max of the prices by the cut column. 
+The resulting data.table object should have the following column names: cut, min, avg, stddev and max, and store it in the res variable.
+
+res <- dt[, list(
+              min = min(price), 
+              avg = mean(price),
+              stddev = sd(price),
+              max = max(price)), by = cut]
+  -------------------            
+ 3/6
+ 
+ Use the ggplot2 package to generate a barplot on the number of diamonds (in the dt dataset) per the cut quality.
+ ggplot(dt, aes(cut)) + geom_bar()
+ --------------------------------
+ 3/7
+ 
+ Use the ggplot2 package to generate a stacked barplot on the number of diamonds per the cut quality and clarity.
+ 
+ ggplot(dt, aes(cut, fill = clarity)) + geom_bar()
+---------------------
+3/8
+
+Use the ggplot2 package to generate a boxplot on the prices split by the cut quality.
+
+ggplot(dt, aes(cut, price))+geom_boxplot()
+-----------------------
+3/9
+Use the ggplot2 package to generate a scatterplot on the weight and the prices of the diamonds.
+
+ggplot(dt, aes(carat, price)) + geom_point()
+-------------------------
+3/10
+
+Use the ggplot2 package to generate a scatterplot on the weight and the prices of the diamonds -- 
+just like in the previous exercise. But add a model on the top of the points as a new layer.
+
+ggplot(dt, aes(carat, price)) + geom_point() + geom_smooth()
+---------------------------
+3/11
+Use the ggplot2 package to generate a scatterplot with a trend line on the weight and the prices of the diamonds -- 
+just like in the previous exercise, but add a linear model on the top of the points this time.
+
+ggplot(dt, aes(carat, price)) + geom_point() + geom_smooth(method = "lm")
+---------------------------
+3/12
+Use the ggplot2 package to generate a boxplot on the prices split by the cut quality --
+broken down by the color of the diamonds in subplots.
+
+str(dt)
+p <- ggplot(dt, aes(cut, price)) + geom_boxplot()
+p + facet_grid( ~ color)
+----------------------------
+3/13
+
+Use the ggplot2 package to generate a barplot on the prices with a custom split.
+
+Create a dt object from diamonds as a data.table object
+Create a new variable in dt called pricecat: using the "cheap" label on diamonds with less than $1,000 price, "expensive" on diamonds above $10,000 and "average" on all other diamonds
+Generate a barplot on this new variable with the correct order of the bars
+
+
+
+ 
