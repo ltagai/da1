@@ -140,4 +140,24 @@ Create a new object called dsummaries that includes the average weight and avera
 The column names should be: color, weight and price. 
 Then pass this new object to ggplot2 and generate a scatterplot on the average weights and prices.
 
+dsummaries <- dt[, .(weight = mean(carat), price = mean(price)), by = cut]
+ggplot(dsummaries, aes(weight, price)) + geom_point()
+---------------------------------------
+21
+
+The dsummaries object is still available in your workspace from the previous exercise. 
+Redraw the previous scatterplot, but this time add a model on the top of the points as a new layer.
+
+ggplot(dsummaries, aes(weight, price)) + geom_point() + geom_smooth()
+-----------------------------------------
+22
+
+The dsummaries object is still available in your workspace from the previous exercise. Redraw the previous scatterplot including the fitted model, 
+but this time add a linear model instead of a smoothed curve on the top of the points as a new layer.
+
+ggplot(dsummaries, aes(weight, price)) + geom_point() + geom_smooth(method = 'lm')
+-----------------------------------------
+23
+Reuse the dsummaries object created in the previous example (no need to redo that, it's already available in your R session), 
+but instead of plotting points, render the cut labels as text on the plot.
 
