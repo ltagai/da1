@@ -183,3 +183,8 @@ The column names should be cut and price.
 Reorder the factor levels of cut in this new object by the related price, so that the cut quality categories in the plot (see next item)
 will be ordered by the average price.
 Plot the bar plot
+
+dsummary <- dt[, list(price = mean(price, na.rm = TRUE)), by= cut]
+dsummary[, cut:= factor(cut, dsummary[order(price), cut])]
+
+ggplot(dsummary, aes(cut, price)) +geom_bar()
