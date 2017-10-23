@@ -89,7 +89,7 @@ Compute the minimum, the (arithmetic) average, the median, the standard deviatio
 dt dataset split by the color and clarity, then store the result in the res variable! 
 The resulting data.table object should have the following column names: color, clarity, min, avg, median, stddev and max.
 
-
+res <- dt[, .(min = min(carat), avg = mean(carat), median = median(carat), stddev = sd(carat), max = max(carat)), by=list(color, clarity)]
 
 -------------------------
 14
