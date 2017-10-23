@@ -1,0 +1,143 @@
+1
+
+Load the ggplot2 package
+Check the structure of the diamonds dataset
+Load the data.table package
+Create a new data.table object called dt with the content of the diamonds dataset
+
+library(ggplot2)
+str(diamonds)
+library(data.table)
+dt <- as.data.table(diamonds)
+---------------
+2
+
+Count the number diamonds in the dt object and store the result in the n variable! Note, that dt is already available in your workspace! 
+If you are working in RStudio, you can reuse dt from the previous exercise.
+
+n <- dt[,.N]
+----------------
+3
+
+Count the number of diamonds in dt with the "E" color and store the result in the n variable!
+
+n <- dt[color =="E", .N]
+-----------------------
+4
+
+Count the number of diamonds in dt with the "E" or "I" colors and store the result in the n variable!
+
+n <- dt[color == "E" | "I", .N]
+-----------------------
+5
+
+Count the number of diamonds in dt with the "E" color and "IF" clarity, then store the result in the n variable!
+
+n <- dt[color == "E" & clarity == "IF", .N]
+--------------------------
+6
+
+Count the number of diamonds in dt with the "E" color and "IF" clarity, then store the result in the n variable!
+
+n <- dt[color == "E" & clarity == "IF", .N]
+--------------------------
+7
+
+Count the number of diamonds with different colors and store the resulting object in the counts variable! 
+Please use the data.table approach instead of the table command to solve this exercise.
+
+counts <- dt[, .N, by = color]
+--------------------------
+8
+
+Redo the previous exercise "counting the number of diamonds with different colors and storing the resulting object in the counts variable", 
+but make sure that the data is ordered by the frequencies (aka the N column)!
+
+counts <- dt[,.N, by = color] [order(N)]
+----------------------------
+9
+
+Count the number of expensive (price > $10,000) diamonds with different cut quality and store the resulting object in the counts variable! 
+Please use the data.table approach instead of the table command to solve this exercise.
+
+counts <- dt[price > 10000, .N, by = cut]
+-----------------------------
+10
+
+Compute the average price of diamonds in the dt dataset with different colors, and store the result in the means variable! 
+The resulting data.table object should have the following column names: color and avg.
+
+means <- dt[, .(avg = mean(price, na.rm = TRUE)), by = color]
+-------------------------------
+11
+
+Compute the minimum and the maximum prices of diamonds in the dt dataset split by the color, and store the result in the n variable! 
+The resulting data.table object should have the following column names: color, min and max, and store it in the summaries variable.
+
+n <- dt[, .(min = min(price), max = max(price)), by = color]
+summaries <- data.table(n)
+--------------------------------
+12
+
+Compute the average price of diamonds in the dt dataset with "I" color and "IF" clarity, then store the result in the res variable!
+
+res <- dt[color =="I" & clarity == "IF", mean(price)]
+----------------------------------
+13
+
+Compute the minimum, the (arithmetic) average, the median, the standard deviation and the max of the weight of diamonds in the 
+dt dataset split by the color and clarity, then store the result in the res variable! 
+The resulting data.table object should have the following column names: color, clarity, min, avg, median, stddev and max.
+
+
+
+-------------------------
+14
+
+Use the ggplot2 package to generate a barplot on the number of diamonds in the dt dataset per color. 
+Don't forget to load the ggplot2 package first!
+
+library(ggplot2)
+ggplot(dt, aes(x = color)) + geom_bar()
+----------------------------
+15
+
+Use the ggplot2 package to generate a stacked barplot on the number of diamonds per color and cut. 
+Map the cut quality on the "x" axis and split the bars by color.
+
+ggplot(dt, aes(x = cut, fill = color)) + geom_bar()
+------------------------------
+16
+
+Redraw the plot from the previous example "using the ggplot2 package to generate a stacked barplot on the number of diamonds 
+per color and cut", but this time, show the proportion of the different colors within the cut categories, 
+so instead of exact counts, show the percentage of the slices withing the bar scaled to 100% per cut quality.
+
+ggplot(dt, aes(x = cut, fill = color)) + geom_bar(position = 'fill')
+--------------------------------
+17
+
+Redraw the plot from the previous example "using the ggplot2 package to generate a stacked barplot 
+on the number of diamonds per color and cut", but this time, draw a grouped bar chart instead of a stacked one!
+
+p <- ggplot(dt, aes(x = cut, fill = color)) + geom_bar(position = "dodge")
+-------------------------------
+18
+
+Use the ggplot2 package to generate a boxplot on the price of the diamonds split by the color categories.
+
+ggplot(dt, aes(color, price), by = color) + geom_boxplot()
+------------------------------
+19
+
+Use ggplot2 to generate a scatterplot on the weight and price of the diamonds in the dt dataset.
+
+ggplot(dt, aes(carat, price)) + geom_point()
+-------------------------------------
+20
+
+Create a new object called dsummaries that includes the average weight and average price of the diamonds from the dt dataset split by color. 
+The column names should be: color, weight and price. 
+Then pass this new object to ggplot2 and generate a scatterplot on the average weights and prices.
+
+
