@@ -161,3 +161,25 @@ ggplot(dsummaries, aes(weight, price)) + geom_point() + geom_smooth(method = 'lm
 Reuse the dsummaries object created in the previous example (no need to redo that, it's already available in your R session), 
 but instead of plotting points, render the cut labels as text on the plot.
 
+dsummaries
+
+ggplot(dsummaries, aes(weight, price, label = cut)) + geom_point() + geom_smooth(method = 'lm')+geom_text()
+--------------------------------------
+24
+
+Use the ggplot2 package to generate a boxplot on the prices of the diamonds in the dt dataset split by the color -- 
+broken down by the cut quality in subplots using facets.
+
+P <- ggplot(dt, aes(color, price)) + geom_boxplot()
+p + facet_wrap(~cut)
+----------------------------------------------------
+25
+
+Use the ggplot2 package to generate a barplot on the average prices by cut quality.
+
+Instructions
+Compute the average price per cut quality and store the resulting data.table object in the dsummary variable. 
+The column names should be cut and price.
+Reorder the factor levels of cut in this new object by the related price, so that the cut quality categories in the plot (see next item)
+will be ordered by the average price.
+Plot the bar plot
